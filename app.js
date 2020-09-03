@@ -36,8 +36,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//const url = "mongodb://localhost:27017/"
-const url = "mongodb+srv://okoth:nairobi@cluster0.aleio.gcp.mongodb.net/userDB";
+const url = "mongodb://localhost:27017/userDB"
+//const url = "mongodb+srv://okoth:nairobi@cluster0.aleio.gcp.mongodb.net/userDB";
 
 mongoose.connect(url, { useNewUrlParser: true,  useUnifiedTopology: true });
 mongoose.set("useCreateIndex", true);
@@ -70,7 +70,8 @@ passport.deserializeUser(function(id, done) {
 passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://stormy-bastion-13858.herokuapp.com/auth/google/secrets",
+        callbackURL : "http://localhost:3000/auth/google/secrets",
+        //callbackURL: "https://stormy-bastion-13858.herokuapp.com/auth/google/secrets",
         userProfileURL : "https://www.googleapis.com/oauth2/v3/userinfo"
     },
     function(accessToken, refreshToken, profile, cb) {
@@ -103,7 +104,6 @@ app.get("/secrets", (req, res) => {
                console.log(err);
            }else{
                if(foundUsers){
-                   console.log(foundUsers)
                    res.render("secrets", {usersWithSecrets: foundUsers});
                }
            }
@@ -232,6 +232,6 @@ app.post("/submit", (req, res) => {
 })
 
 app.listen(process.env.PORT ||port,  () =>{
-    //console.log(`listening at http://localhost:${port}`);
+    console.log(`listening at http://localhost:${port}`);
 
 });
